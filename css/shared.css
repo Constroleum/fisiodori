@@ -72,12 +72,6 @@ p { line-height: 1.7; color: var(--text-muted); }
 .nav-logo img { height: 48px; transition: all 0.3s ease; }
 .header.scrolled .nav-logo img { height: 40px; }
 
-/* Show green logo when scrolled, white when transparent */
-.nav-logo .logo-scrolled { display: none; }
-.nav-logo .logo-default { display: block; }
-.header.scrolled .nav-logo .logo-scrolled { display: block; }
-.header.scrolled .nav-logo .logo-default { display: none; }
-
 .nav-links {
   display: flex;
   list-style: none;

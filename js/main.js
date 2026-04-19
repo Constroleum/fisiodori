@@ -11,11 +11,17 @@ if (progressBar) {
   }, { passive: true });
 }
 
-// Sticky header
+// Sticky header + logo swap
 const header = document.querySelector('.header');
+const navLogo = document.getElementById('navLogo');
+const logoWhite = navLogo ? navLogo.src.replace(/[^/]+$/, '') + 'logo_white.png' : null;
+const logoGreen = navLogo ? navLogo.src.replace(/[^/]+$/, '') + 'logo_green.png' : null;
+
 if (header) {
   const checkScroll = () => {
-    header.classList.toggle('scrolled', window.scrollY > 60);
+    const scrolled = window.scrollY > 60;
+    header.classList.toggle('scrolled', scrolled);
+    if (navLogo) navLogo.src = scrolled ? logoGreen : logoWhite;
   };
   window.addEventListener('scroll', checkScroll, { passive: true });
   checkScroll();
