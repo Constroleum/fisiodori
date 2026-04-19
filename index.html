@@ -25,23 +25,23 @@
     }
 
     html, body {
-      height: 100%;
+      min-height: 100%;
       font-family: 'DM Sans', sans-serif;
       background: var(--dark);
-      overflow: hidden;
     }
 
     .scene {
       position: relative;
       width: 100%;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      padding: 2rem 1rem;
     }
 
-    /* Animated background */
+    /* Background - no animation on mobile */
     .bg-hero {
       position: absolute;
       inset: 0;
@@ -49,24 +49,31 @@
       background-size: cover;
       background-position: center;
       filter: brightness(0.3) saturate(0.6);
-      transform: scale(1.05);
-      animation: slowZoom 20s ease-in-out infinite alternate;
+    }
+
+    @media (min-width: 769px) {
+      .bg-hero { animation: slowZoom 20s ease-in-out infinite alternate; }
     }
 
     @keyframes slowZoom {
-      from { transform: scale(1.05); }
-      to { transform: scale(1.12); }
+      from { transform: scale(1.0); }
+      to { transform: scale(1.06); }
     }
 
-    /* Animated green overlay blobs */
+    /* Blobs - hidden on mobile */
     .blob {
       position: absolute;
       border-radius: 50%;
       filter: blur(80px);
       opacity: 0.15;
-      animation: blobFloat 8s ease-in-out infinite;
+      display: none;
     }
-    .blob-1 { width: 500px; height: 500px; background: var(--green); top: -100px; left: -100px; animation-delay: 0s; }
+
+    @media (min-width: 769px) {
+      .blob { display: block; animation: blobFloat 8s ease-in-out infinite; }
+    }
+
+    .blob-1 { width: 500px; height: 500px; background: var(--green); top: -100px; left: -100px; }
     .blob-2 { width: 400px; height: 400px; background: var(--green-light); bottom: -50px; right: -50px; animation-delay: 3s; }
     .blob-3 { width: 300px; height: 300px; background: var(--gold); top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: 5s; }
 
@@ -75,15 +82,18 @@
       50% { transform: translate(20px, -20px) scale(1.1); }
     }
 
-    /* Grid lines */
+    /* Grid lines - no animation on mobile */
     .grid-overlay {
       position: absolute;
       inset: 0;
       background-image:
-        linear-gradient(rgba(46,125,91,0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(46,125,91,0.1) 1px, transparent 1px);
+        linear-gradient(rgba(46,125,91,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(46,125,91,0.08) 1px, transparent 1px);
       background-size: 60px 60px;
-      animation: gridShift 15s linear infinite;
+    }
+
+    @media (min-width: 769px) {
+      .grid-overlay { animation: gridShift 15s linear infinite; }
     }
 
     @keyframes gridShift {
@@ -95,26 +105,32 @@
       position: relative;
       z-index: 10;
       text-align: center;
-      padding: 2rem;
+      padding: 1.5rem 1rem;
+      width: 100%;
+      max-width: 600px;
     }
 
     .logo-wrap {
-      margin-bottom: 2rem;
-      animation: fadeDown 1s ease forwards;
+      margin-bottom: 1.5rem;
+      animation: fadeDown 0.6s ease forwards;
     }
 
     .logo-wrap img {
-      height: 120px;
-      filter: drop-shadow(0 0 30px rgba(46,125,91,0.6));
+      height: 90px;
+      filter: drop-shadow(0 0 20px rgba(46,125,91,0.5));
+    }
+
+    @media (min-width: 769px) {
+      .logo-wrap img { height: 120px; }
     }
 
     .tagline {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(1.8rem, 5vw, 3.2rem);
+      font-size: clamp(1.6rem, 7vw, 3.2rem);
       color: #fff;
       line-height: 1.2;
       margin-bottom: 0.5rem;
-      animation: fadeDown 1s 0.2s ease both;
+      animation: fadeDown 0.6s 0.15s ease both;
     }
 
     .tagline em {
@@ -123,43 +139,52 @@
     }
 
     .subtitle {
-      font-size: 1rem;
+      font-size: clamp(0.8rem, 3vw, 1rem);
       color: rgba(255,255,255,0.6);
-      letter-spacing: 0.15em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-bottom: 3.5rem;
-      animation: fadeDown 1s 0.4s ease both;
+      margin-bottom: 2.5rem;
+      animation: fadeDown 0.6s 0.25s ease both;
     }
 
     .lang-prompt {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: rgba(255,255,255,0.4);
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      margin-bottom: 1.5rem;
-      animation: fadeDown 1s 0.6s ease both;
+      margin-bottom: 1.2rem;
+      animation: fadeDown 0.6s 0.35s ease both;
     }
 
     .lang-cards {
       display: flex;
-      gap: 1.2rem;
+      gap: 1rem;
       justify-content: center;
       flex-wrap: wrap;
-      animation: fadeUp 1s 0.8s ease both;
+      animation: fadeUp 0.6s 0.45s ease both;
     }
 
     .lang-card {
       position: relative;
-      width: 160px;
-      padding: 1.8rem 1.2rem;
-      border: 1px solid rgba(255,255,255,0.12);
+      width: 140px;
+      padding: 1.4rem 1rem;
+      border: 1px solid rgba(255,255,255,0.15);
       border-radius: 16px;
-      background: rgba(255,255,255,0.04);
-      backdrop-filter: blur(20px);
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(10px);
       cursor: pointer;
       text-decoration: none;
-      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: all 0.3s ease;
       overflow: hidden;
+    }
+
+    @media (min-width: 769px) {
+      .lang-card { width: 160px; padding: 1.8rem 1.2rem; }
+      .lang-card:hover {
+        transform: translateY(-8px) scale(1.05);
+        border-color: var(--green);
+        box-shadow: 0 20px 60px rgba(46,125,91,0.4);
+      }
     }
 
     .lang-card::before {
@@ -172,46 +197,42 @@
       border-radius: 16px;
     }
 
-    .lang-card:hover::before { opacity: 1; }
-
-    .lang-card:hover {
-      transform: translateY(-8px) scale(1.05);
-      border-color: var(--green);
-      box-shadow: 0 20px 60px rgba(46,125,91,0.4);
-    }
+    .lang-card:hover::before, .lang-card:active::before { opacity: 1; }
 
     .lang-card * { position: relative; z-index: 1; }
 
     .lang-flag {
-      font-size: 2.5rem;
+      font-size: 2rem;
       display: block;
-      margin-bottom: 0.6rem;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+      margin-bottom: 0.5rem;
     }
 
     .lang-name {
       display: block;
       font-family: 'Playfair Display', serif;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       color: #fff;
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.25rem;
     }
 
     .lang-desc {
       display: block;
-      font-size: 0.75rem;
-      color: rgba(255,255,255,0.6);
-      letter-spacing: 0.05em;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 0.03em;
     }
 
-    .lang-card:hover .lang-desc { color: rgba(255,255,255,0.9); }
-
-    /* Floating particles */
+    /* Floating particles - desktop only */
     .particles {
       position: absolute;
       inset: 0;
       overflow: hidden;
       pointer-events: none;
+      display: none;
+    }
+
+    @media (min-width: 769px) {
+      .particles { display: block; }
     }
 
     .particle {
@@ -231,25 +252,31 @@
     }
 
     @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-20px); }
+      from { opacity: 0; transform: translateY(-15px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(15px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Pulse ring around logo */
+    /* Logo rings - desktop only */
     .logo-ring {
       position: absolute;
-      width: 160px;
-      height: 160px;
+      width: 140px;
+      height: 140px;
       border: 1px solid rgba(46,125,91,0.3);
       border-radius: 50%;
       animation: ringPulse 3s ease-in-out infinite;
       top: 50%; left: 50%; transform: translate(-50%, -50%);
+      display: none;
     }
+
+    @media (min-width: 769px) {
+      .logo-ring { display: block; }
+    }
+
     .logo-ring:nth-child(2) { animation-delay: 1s; }
     .logo-ring:nth-child(3) { animation-delay: 2s; }
 
@@ -261,8 +288,8 @@
     .logo-container { position: relative; display: inline-block; }
 
     @media (max-width: 480px) {
-      .lang-cards { flex-direction: column; align-items: center; }
-      .lang-card { width: 200px; }
+      .lang-cards { gap: 0.8rem; }
+      .lang-card { width: 130px; padding: 1.2rem 0.8rem; }
     }
   </style>
 </head>

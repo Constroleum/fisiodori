@@ -1,12 +1,14 @@
 /* Fisiodori – Shared JS */
 
+const isMobile = () => window.innerWidth <= 768;
+
 // Progress bar
 const progressBar = document.querySelector('.progress-bar');
 if (progressBar) {
   window.addEventListener('scroll', () => {
     const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
     progressBar.style.transform = `scaleX(${pct})`;
-  });
+  }, { passive: true });
 }
 
 // Sticky header
@@ -30,10 +32,12 @@ if (hamburger && mobileMenu) {
     document.body.style.overflow = 'hidden';
   });
 
-  mobileClose?.addEventListener('click', () => {
-    mobileMenu.classList.remove('open');
-    document.body.style.overflow = '';
-  });
+  if (mobileClose) {
+    mobileClose.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  }
 
   mobileMenu.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', () => {
@@ -43,18 +47,25 @@ if (hamburger && mobileMenu) {
   });
 }
 
-// Scroll reveal
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
-    if (entry.isIntersecting) {
-      setTimeout(() => entry.target.classList.add('visible'), i * 80);
-    }
-  });
-}, { threshold: 0.1 });
+// Scroll reveal — skip on mobile (CSS handles it)
+if (!isMobile()) {
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.08 });
 
-document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
-  revealObserver.observe(el);
-});
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+    revealObserver.observe(el);
+  });
+} else {
+  // On mobile, make everything visible immediately
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+    el.classList.add('visible');
+  });
+}
 
 // Animated counters
 const counterObserver = new IntersectionObserver((entries) => {
@@ -72,7 +83,7 @@ document.querySelectorAll('[data-target]').forEach(el => counterObserver.observe
 
 function animateCounter(el, target, suffix) {
   let start = 0;
-  const duration = 2000;
+  const duration = 1800;
   const step = (timestamp) => {
     if (!start) start = timestamp;
     const progress = Math.min((timestamp - start) / duration, 1);
@@ -89,24 +100,23 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     const target = document.querySelector(this.getAttribute('href'));
     if (target) {
       e.preventDefault();
-      const offset = 80;
+      const offset = 70;
       const top = target.getBoundingClientRect().top + window.scrollY - offset;
       window.scrollTo({ top, behavior: 'smooth' });
     }
   });
 });
 
-// Contact form submission
+// Contact form
 const contactForm = document.getElementById('contactForm');
 if (contactForm) {
   contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const btn = contactForm.querySelector('button[type="submit"]');
     const originalText = btn.textContent;
-    btn.textContent = '✓ ';
+    btn.textContent = '✓ Enviado!';
     btn.disabled = true;
-    btn.style.background = '#2E7D5B';
-
+    btn.style.background = 'var(--green-dark)';
     setTimeout(() => {
       btn.textContent = originalText;
       btn.disabled = false;
@@ -116,17 +126,12 @@ if (contactForm) {
   });
 }
 
-// Parallax on hero
-const heroBg = document.querySelector('.hero-bg');
-if (heroBg) {
-  window.addEventListener('scroll', () => {
-    heroBg.style.transform = `scale(1.04) translateY(${window.scrollY * 0.3}px)`;
-  }, { passive: true });
+// Parallax on hero - desktop only
+if (!isMobile()) {
+  const heroBg = document.querySelector('.hero-bg');
+  if (heroBg) {
+    window.addEventListener('scroll', () => {
+      heroBg.style.transform = `translateY(${window.scrollY * 0.25}px)`;
+    }, { passive: true });
+  }
 }
-
-// Stagger cards on load
-window.addEventListener('load', () => {
-  document.querySelectorAll('.service-card, .blog-card').forEach((card, i) => {
-    card.style.transitionDelay = `${i * 0.1}s`;
-  });
-});

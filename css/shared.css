@@ -72,6 +72,12 @@ p { line-height: 1.7; color: var(--text-muted); }
 .nav-logo img { height: 48px; transition: all 0.3s ease; }
 .header.scrolled .nav-logo img { height: 40px; }
 
+/* Show green logo when scrolled, white when transparent */
+.nav-logo .logo-scrolled { display: none; }
+.nav-logo .logo-default { display: block; }
+.header.scrolled .nav-logo .logo-scrolled { display: block; }
+.header.scrolled .nav-logo .logo-default { display: none; }
+
 .nav-links {
   display: flex;
   list-style: none;
@@ -148,9 +154,10 @@ p { line-height: 1.7; color: var(--text-muted); }
   flex-direction: column;
   gap: 5px;
   cursor: pointer;
-  padding: 4px;
+  padding: 6px;
   background: none;
   border: none;
+  z-index: 10;
 }
 
 .hamburger span {
@@ -162,7 +169,7 @@ p { line-height: 1.7; color: var(--text-muted); }
   transition: all 0.3s;
 }
 
-.header.scrolled .hamburger span { background: var(--text); }
+.header.scrolled .hamburger span { background: var(--dark); }
 
 /* Mobile nav */
 .mobile-menu {
@@ -202,8 +209,7 @@ p { line-height: 1.7; color: var(--text-muted); }
 /* ---- HERO ---- */
 .hero {
   position: relative;
-  height: 100vh;
-  min-height: 650px;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -215,13 +221,15 @@ p { line-height: 1.7; color: var(--text-muted); }
   background-image: url('../images/hero.jpg');
   background-size: cover;
   background-position: center 30%;
-  transform: scale(1.04);
-  animation: heroZoom 20s ease-in-out infinite alternate;
+}
+
+@media (min-width: 769px) {
+  .hero-bg { animation: heroZoom 20s ease-in-out infinite alternate; }
 }
 
 @keyframes heroZoom {
-  from { transform: scale(1.04); }
-  to { transform: scale(1.1); }
+  from { transform: scale(1.0); }
+  to { transform: scale(1.06); }
 }
 
 .hero-overlay {
@@ -633,10 +641,23 @@ p { line-height: 1.7; color: var(--text-muted); }
 /* ---- TESTIMONIALS ---- */
 .testimonials-bg { background: var(--dark); }
 
+.testimonials-bg .section-label {
+  background: rgba(255,255,255,0.1);
+  color: var(--green-light);
+}
+
+.testimonials-bg .section-title {
+  color: #fff;
+}
+
 .testimonials-track {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
+}
+
+@media (max-width: 900px) {
+  .testimonials-track { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
 }
 
 .testimonial-card {
@@ -957,26 +978,59 @@ p { line-height: 1.7; color: var(--text-muted); }
 }
 
 /* ---- RESPONSIVE ---- */
+
+/* Reduce animations on mobile for performance */
+@media (max-width: 768px) {
+  .hero-bg { animation: none !important; }
+  .hero-content { animation: none !important; }
+  .hero-badge, .hero-title, .hero-desc, .hero-actions { animation: none !important; opacity: 1 !important; transform: none !important; }
+  .scroll-line { animation: none !important; }
+
+  /* Show reveals immediately on mobile - no lazy fade */
+  .reveal, .reveal-left, .reveal-right {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
 @media (max-width: 900px) {
   .about-grid { grid-template-columns: 1fr; gap: 3rem; }
   .about-img-main img { height: 400px; }
   .about-img-accent { width: 130px; height: 130px; }
   .gallery-grid { grid-template-columns: 1fr 1fr; }
   .gallery-item:first-child { grid-row: auto; }
-  .testimonials-track { grid-template-columns: 1fr; }
   .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .hero-stats { display: none; }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .nav-links { display: none; }
   .hamburger { display: flex; }
-  .section { padding: 4rem 0; }
+  .section { padding: 3.5rem 0; }
   .gallery-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
   .form-row { grid-template-columns: 1fr; }
-  .contact-form { padding: 2rem; }
+  .contact-form { padding: 1.5rem; }
+  .stats-strip .container { gap: 1.2rem; }
+  .services-grid { grid-template-columns: 1fr; }
+  .blog-grid { grid-template-columns: 1fr; }
+  .lang-switcher { display: none; }
+  
+  /* Hero mobile fixes */
+  .hero-title { font-size: 2rem; }
+  .hero-desc { font-size: 0.95rem; }
+  .hero-content { padding-top: 6rem; }
+  .hero-actions { flex-direction: column; align-items: flex-start; }
+  .hero-actions .btn { width: 100%; justify-content: center; }
+
+  /* About on mobile */
+  .about-img-accent { display: none; }
+  .about-badge { top: 0.5rem; left: 0.5rem; }
 }
 
 /* ---- WHATSAPP FLOAT ---- */
