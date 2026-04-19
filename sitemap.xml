@@ -1,32 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
+  <!-- Landing page -->
   <url>
-    <loc>https://www.fisiodori.com/</loc>
-    <lastmod>2025-02-10</lastmod>
+    <loc>https://fisiodori.com/</loc>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
 
+  <!-- Spanish version -->
   <url>
-    <loc>https://www.fisiodori.com/pages/blog/fdm-que-es.html</loc>
-    <lastmod>2025-01-10</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://fisiodori.com/es/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://fisiodori.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fisiodori.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://fisiodori.com/hu/"/>
   </url>
 
+  <!-- English version -->
   <url>
-    <loc>https://www.fisiodori.com/pages/blog/fisio-espanol-budapest.html</loc>
-    <lastmod>2025-01-20</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://fisiodori.com/en/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://fisiodori.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fisiodori.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://fisiodori.com/hu/"/>
   </url>
 
+  <!-- Hungarian version -->
   <url>
-    <loc>https://www.fisiodori.com/pages/blog/doula-budapest.html</loc>
-    <lastmod>2025-02-05</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://fisiodori.com/hu/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://fisiodori.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fisiodori.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://fisiodori.com/hu/"/>
   </url>
+
+  <!-- Blog index -->
+  <url>
+    <loc>https://fisiodori.com/blog/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Blog articles -->
+  <url><loc>https://fisiodori.com/blog/fdm-que-es.html</loc><changefreq>monthly</changefreq><priority>0.8</priority><lastmod>2025-01-15</lastmod></url>
+  <url><loc>https://fisiodori.com/blog/ventosas-beneficios.html</loc><changefreq>monthly</changefreq><priority>0.8</priority><lastmod>2025-02-10</lastmod></url>
+  <url><loc>https://fisiodori.com/blog/puncion-seca.html</loc><changefreq>monthly</changefreq><priority>0.8</priority><lastmod>2025-03-05</lastmod></url>
+  <url><loc>https://fisiodori.com/blog/dolor-espalda-budapest.html</loc><changefreq>monthly</changefreq><priority>0.8</priority><lastmod>2025-04-20</lastmod></url>
+  <url><loc>https://fisiodori.com/blog/fisio-expat-budapest.html</loc><changefreq>monthly</changefreq><priority>0.8</priority><lastmod>2025-05-12</lastmod></url>
+  <url><loc>https://fisiodori.com/blog/doula-budapest.html</loc><changefreq>monthly</changefreq><priority>0.8</priority><lastmod>2025-06-01</lastmod></url>
+  <url><loc>https://fisiodori.com/blog/fascitis-plantar.html</loc><changefreq>monthly</changefreq><priority>0.75</priority><lastmod>2025-07-08</lastmod></url>
+  <url><loc>https://fisiodori.com/blog/cervicalgia.html</loc><changefreq>monthly</changefreq><priority>0.75</priority><lastmod>2025-08-15</lastmod></url>
+  <url><loc>https://fisiodori.com/blog/recuperacion-deportiva.html</loc><changefreq>monthly</changefreq><priority>0.75</priority><lastmod>2025-09-10</lastmod></url>
+  <url><loc>https://fisiodori.com/blog/postparto-budapest.html</loc><changefreq>monthly</changefreq><priority>0.75</priority><lastmod>2025-10-05</lastmod></url>
 
 </urlset>

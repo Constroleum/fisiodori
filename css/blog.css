@@ -1,25 +1,21 @@
-/* Blog post extra styles */
-.fade-in-el {
-  opacity: 0;
-  transform: translateY(22px);
-  transition: opacity .6s ease, transform .6s ease;
-}
-.fade-in-el.visible {
-  opacity: 1;
-  transform: none;
-}
-
+/* blog.css — mobile menu open state */
 @media (max-width: 640px) {
   .nav-links.open {
     display: flex;
     flex-direction: column;
     position: fixed;
-    top: 70px; left: 0; right: 0;
-    background: rgba(255,255,255,.97);
-    backdrop-filter: blur(16px);
-    padding: 20px 30px 30px;
-    border-bottom: 1px solid rgba(42,157,143,.1);
-    gap: 18px;
+    top: var(--nav-h); left: 0; right: 0;
+    background: var(--cream);
+    padding: 28px 28px 36px;
+    gap: 22px;
+    border-bottom: 1px solid var(--sand);
     z-index: 199;
+    box-shadow: 0 16px 40px rgba(61,43,31,0.08);
+  }
+  .nav-links.open a {
+    font-size: 0.9rem; font-weight: 400;
+    color: var(--espresso);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
   }
 }

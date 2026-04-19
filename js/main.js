@@ -1,120 +1,132 @@
-/* =============================================
-   FISIODORI — Main JavaScript
-   ============================================= */
+/* Fisiodori – Shared JS */
 
-const EMAIL = 'szollosi.dora13@gmail.com';
-
-/* ── Language System ── */
-function setLang(lang) {
-  // Hide overlay
-  const overlay = document.getElementById('lang-overlay');
-  if (overlay) overlay.classList.add('hidden');
-
-  // Toggle all lang elements
-  document.querySelectorAll('[data-lang]').forEach(el => {
-    el.classList.toggle('active', el.dataset.lang === lang);
+// Progress bar
+const progressBar = document.querySelector('.progress-bar');
+if (progressBar) {
+  window.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+    progressBar.style.transform = `scaleX(${pct})`;
   });
-  document.querySelectorAll('[data-lang-i]').forEach(el => {
-    el.classList.toggle('active', el.dataset.langI === lang);
-  });
-
-  // Update pills
-  document.querySelectorAll('.lang-pill').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.l === lang);
-  });
-
-  // Update HTML lang attr
-  document.documentElement.lang = lang === 'hu' ? 'hu' : lang === 'es' ? 'es' : 'en';
-
-  // Persist
-  localStorage.setItem('fisiodori-lang', lang);
-
-  // Update mailto links with lang-specific subject
-  updateMailtoLinks(lang);
 }
 
-function updateMailtoLinks(lang) {
-  const subjects = {
-    en: 'Appointment Request – Fisiodori',
-    hu: 'Időpontfoglalás – Fisiodori',
-    es: 'Solicitud de cita – Fisiodori',
+// Sticky header
+const header = document.querySelector('.header');
+if (header) {
+  const checkScroll = () => {
+    header.classList.toggle('scrolled', window.scrollY > 60);
   };
-  const bodies = {
-    en: 'Hello Dóra,%0D%0A%0D%0AI would like to book a session. Please let me know your availability.%0D%0A%0D%0AThank you!',
-    hu: 'Kedves Dóra,%0D%0A%0D%0AIdőpontot szeretnék foglalni. Kérem, adja meg szabad időpontjait.%0D%0A%0D%0AKöszönöm!',
-    es: 'Hola Dóra,%0D%0A%0D%0AMe gustaría reservar una sesión. ¿Podría indicarme su disponibilidad?%0D%0A%0D%0A¡Muchas gracias!',
-  };
-  const href = `mailto:${EMAIL}?subject=${subjects[lang]}&body=${bodies[lang]}`;
-  document.querySelectorAll('.mailto-link').forEach(a => a.href = href);
+  window.addEventListener('scroll', checkScroll, { passive: true });
+  checkScroll();
 }
 
-/* ── Init ── */
-document.addEventListener('DOMContentLoaded', () => {
-  const saved = localStorage.getItem('fisiodori-lang');
-  if (saved) {
-    setLang(saved);
-  } else {
-    // Default: show overlay — set EN elements active so page isn't blank
-    document.querySelectorAll('[data-lang="en"]').forEach(el => el.classList.add('active'));
-    document.querySelectorAll('[data-lang-i="en"]').forEach(el => el.classList.add('active'));
-  }
+// Mobile menu
+const hamburger = document.querySelector('.hamburger');
+const mobileMenu = document.querySelector('.mobile-menu');
+const mobileClose = document.querySelector('.mobile-close');
 
-  // Hamburger menu
-  const hamburger = document.querySelector('.nav-hamburger');
-  const navLinks = document.querySelector('.nav-links');
-  if (hamburger && navLinks) {
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('open');
-      navLinks.classList.toggle('open');
-    });
-  }
+if (hamburger && mobileMenu) {
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
 
-  // Close mobile menu on link click
-  document.querySelectorAll('.nav-links a').forEach(a => {
+  mobileClose?.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+
+  mobileMenu.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', () => {
-      if (hamburger) hamburger.classList.remove('open');
-      if (navLinks) navLinks.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
     });
   });
+}
 
-  // Smooth scroll for anchor links
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      const target = document.querySelector(a.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        const offset = 70;
-        const y = target.getBoundingClientRect().top + window.scrollY - offset;
-        window.scrollTo({ top: y, behavior: 'smooth' });
-      }
-    });
+// Scroll reveal
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+    }
   });
+}, { threshold: 0.1 });
 
-  // Nav shadow on scroll
-  const nav = document.querySelector('nav');
-  if (nav) {
-    window.addEventListener('scroll', () => {
-      nav.style.boxShadow = window.scrollY > 10
-        ? '0 4px 24px rgba(0,0,0,.08)'
-        : 'none';
-    }, { passive: true });
-  }
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+  revealObserver.observe(el);
+});
 
-  // Intersection Observer for fade-in animations
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12 });
+// Animated counters
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !entry.target.dataset.counted) {
+      entry.target.dataset.counted = '1';
+      const target = parseInt(entry.target.dataset.target);
+      const suffix = entry.target.dataset.suffix || '';
+      animateCounter(entry.target, target, suffix);
+    }
+  });
+}, { threshold: 0.5 });
 
-  document.querySelectorAll('.service-card, .blog-card, .credential, .contact-card').forEach(el => {
-    el.classList.add('fade-in-el');
-    observer.observe(el);
+document.querySelectorAll('[data-target]').forEach(el => counterObserver.observe(el));
+
+function animateCounter(el, target, suffix) {
+  let start = 0;
+  const duration = 2000;
+  const step = (timestamp) => {
+    if (!start) start = timestamp;
+    const progress = Math.min((timestamp - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.floor(ease * target) + suffix;
+    if (progress < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      const offset = 80;
+      const top = target.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
   });
 });
 
-/* expose for HTML onclick */
-window.setLang = setLang;
+// Contact form submission
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
+  contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const btn = contactForm.querySelector('button[type="submit"]');
+    const originalText = btn.textContent;
+    btn.textContent = '✓ ';
+    btn.disabled = true;
+    btn.style.background = '#2E7D5B';
+
+    setTimeout(() => {
+      btn.textContent = originalText;
+      btn.disabled = false;
+      btn.style.background = '';
+      contactForm.reset();
+    }, 3000);
+  });
+}
+
+// Parallax on hero
+const heroBg = document.querySelector('.hero-bg');
+if (heroBg) {
+  window.addEventListener('scroll', () => {
+    heroBg.style.transform = `scale(1.04) translateY(${window.scrollY * 0.3}px)`;
+  }, { passive: true });
+}
+
+// Stagger cards on load
+window.addEventListener('load', () => {
+  document.querySelectorAll('.service-card, .blog-card').forEach((card, i) => {
+    card.style.transitionDelay = `${i * 0.1}s`;
+  });
+});

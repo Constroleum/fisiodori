@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
-Disallow: /assets/
 
-Sitemap: https://www.fisiodori.com/sitemap.xml
+Sitemap: https://fisiodori.com/sitemap.xml
+
+# Fisiodori – Fisioterapeuta en Budapest
+# Dóra Szöllősi – FDM, Cupping, Dry Needling, Doula
